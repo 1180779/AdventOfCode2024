@@ -2,16 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include "shared.h"
 
 #define SIZE 100000
-
-#define ERROR(source) fprintf(stderr, "file: %s, line: %d, ", __FILE__, __LINE__), perror(source), exit(-1)
-
-#define MALLOC(ptr, s, singlesize)  do { \
-                                        ptr = malloc(singlesize * s); \
-                                        if(ptr == NULL) \
-                                            ERROR("malloc"); \
-                                    } while(0)
 
 #define LISTS_INIT(l, s)            do { \
                                         MALLOC(l.data1, s, sizeof(long long int)); \
@@ -37,7 +30,7 @@ typedef struct lists {
 } lists;
 
 int compare(const void* i1, const void* i2) {
-    return *(long long int*)i1 - *(long long int*)i2;
+    return (int)(*(long long int*)i1 - *(long long int*)i2);
 }
 
 lists read_data() {
@@ -98,4 +91,7 @@ int main() {
 
     part1(d);
     part2(d);
+
+    LISTS_DESTROY(d);
+    return EXIT_SUCCESS;
 }
