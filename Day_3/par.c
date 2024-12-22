@@ -11,6 +11,7 @@ void parInit(par* p, char* string, int len)
     MALLOC(p->string, p->strLen + 1, sizeof(char));
     strcpy(p->string, string);
     p->c = -1;
+    p->enabled = 1;
 }
 
 int parMatch(par* p, char c) 
@@ -39,11 +40,64 @@ int parMatchInt(par* p)
     return res;
 }
 
-parRes parMatchPattern(par* p) 
+parRes parMatchPattern(par* p)
 {
     parRes res = { 0 };
 
     while (p->c < (int)p->strLen - 1) {
+        if (!parMatch(p, 'm'))
+            continue;
+        if (!parMatch(p, 'u'))
+            continue;
+        if (!parMatch(p, 'l'))
+            continue;
+        if (!parMatch(p, '('))
+            continue;
+
+        res.i1 = parMatchInt(p);
+        if (res.i1 == -1)
+            continue;
+
+        if (!parMatch(p, ','))
+            continue;
+
+        res.i2 = parMatchInt(p);
+        if (res.i2 == -1)
+            continue;
+
+        if (!parMatch(p, ')'))
+            continue;
+        break;
+    }
+    return res;
+}
+
+parRes parMatchPattern2(par* p) 
+{
+    parRes res = { 0 };
+
+    while (p->c < (int)p->strLen - 1) {
+        if (parMatch(p, 'd') && parMatch(p, 'o')) {
+            if (parMatch(p, '(') && parMatch(p, ')'))
+                p->enabled = 1;
+            else
+                --p->c;
+
+            if (parMatch(p, 'n') && parMatch(p, '\'') && parMatch(p, 't') && parMatch(p, '(') && parMatch(p, ')'))
+                p->enabled = 0;
+            else
+                --p->c;
+            continue;
+        }
+        else
+            --p->c;
+        
+        if (!p->enabled) {
+            ++p->c;
+            continue;
+        }
+        
+
         if (!parMatch(p, 'm'))
             continue;
         if (!parMatch(p, 'u'))

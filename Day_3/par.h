@@ -11,12 +11,14 @@ typedef struct par {
     char* string;
     size_t strLen;
     int c; // string char index
+    short enabled;
 } par;
 
 void parInit(par* p, char* string, int len);
 int parMatch(par* p, char c);
 int parMatchInt(par* p);
 parRes parMatchPattern(par* p);
+parRes parMatchPattern2(par* p);
 void parDestroy(par* p);
 
 #endif

@@ -35,4 +35,8 @@
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+    <None Include="task.MD" />
+  </ItemGroup>
 </Project>
