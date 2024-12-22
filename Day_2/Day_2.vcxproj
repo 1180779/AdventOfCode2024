@@ -137,6 +137,9 @@
     <Text Include="input.txt" />
     <Text Include="input_sample.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Day_1\task.MD" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

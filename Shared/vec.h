@@ -43,7 +43,7 @@ typedef unsigned long long int _vec_size;
                                 \
                                 inline void vec##tname##_reserve(vec##tname* v, _vec_size s) \
                                 { \
-                                    if(s < v->reserved) \
+                                    if(s <= v->reserved) \
                                         return; \
                                     REALLOC(v->data, s, sizeof(type)); \
                                     v->reserved = s; \

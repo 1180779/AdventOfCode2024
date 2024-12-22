@@ -20,11 +20,14 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="input_sample.txt">
-      <Filter>Source Files</Filter>
-    </Text>
     <Text Include="input.txt">
-      <Filter>Source Files</Filter>
+      <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="input_sample.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Day_1\task.MD" />
   </ItemGroup>
 </Project>
