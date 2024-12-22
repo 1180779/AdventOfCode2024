@@ -2,3 +2,5 @@
 // such as names of functions and macros.
 // For more information see https://go.microsoft.com/fwlink/?linkid=865984
 #define VEC_DEFINE(type) VEC_DEFINE_EXT(type, type)
+#define _VEC_DEFINE_EXT(type, tname) VEC_DEFINE_EXT(type, tname)
+#define VEC_DEFINE_NONAME(type) _VEC_DEFINE_EXT(type, )

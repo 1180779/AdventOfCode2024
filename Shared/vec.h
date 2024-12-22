@@ -11,35 +11,37 @@
 
 typedef unsigned long long int _vec_size;
 
+// vec data at index i
+#define vec_dat(v, i)           v.data[i]
+
 #define VEC_INIT_SIZE 8
 #define VEC_SCALING_FACTOR 2
-
-#define vec_at(v, i)            v->data[i]
+#define _vec_at(v, i)           v->data[i]
 
 #define VEC_DEFINE_EXT(type, tname) \
-                                typedef struct vec_##tname { \
+                                typedef struct vec##tname { \
                                     type* data; \
                                     _vec_size reserved; \
                                     _vec_size size; \
-                                } vec_##tname; \
+                                } vec##tname; \
                                 \
                                 \
                                 \
-                                void vec_##tname##_init(vec_##tname* v) \
+                                void vec##tname##_init(vec##tname* v) \
                                 { \
                                     MALLOC(v->data, VEC_INIT_SIZE, sizeof(type)); \
                                     v->reserved = VEC_INIT_SIZE; \
                                     v->size = 0; \
                                 } \
                                 \
-                                void vec_##tname##_destroy(vec_##tname* v, _vec_size s) \
+                                void vec##tname##_destroy(vec##tname* v) \
                                 { \
                                     free(v->data); \
                                     v->reserved = 0; \
                                     v->size = 0; \
                                 } \
                                 \
-                                inline void vec_##tname##_reserve(vec_##tname* v, _vec_size s) \
+                                inline void vec##tname##_reserve(vec##tname* v, _vec_size s) \
                                 { \
                                     if(s < v->reserved) \
                                         return; \
@@ -47,55 +49,77 @@ typedef unsigned long long int _vec_size;
                                     v->reserved = s; \
                                 } \
                                 \
-                                inline void vec_##tname##_resize(vec_##tname* v, _vec_size s) \
+                                inline void vec##tname##_resize(vec##tname* v, _vec_size s) \
                                 { \
                                     REALLOC(v->data, s, sizeof(type)); \
                                     v->reserved = s; \
                                     v->size = s; \
                                 } \
                                 \
+                                inline void vec##tname##_clear(vec##tname* v) \
+                                {\
+                                    v->size = 0; \
+                                }\
                                 \
                                 \
-                                inline type vec_##tname##_at(vec_##tname* v, _vec_size i) \
+                                \
+                                inline type* vec##tname##_at(vec##tname* v, _vec_size i) \
                                 { \
-                                    return vec_at(v, i); \
+                                    if(v->size < i) \
+                                        ERROR("Index out of range"); \
+                                    return &_vec_at(v, i); \
                                 } \
                                 \
                                 \
                                 \
-                                void vec_##tname##_add(vec_##tname* v, type i) \
+                                void vec##tname##_add(vec##tname* v, type i) \
                                 { \
                                     if(v->reserved == v->size) \
-                                        vec_##tname##_reserve(v, v->size * VEC_SCALING_FACTOR); \
+                                        vec##tname##_reserve(v, v->size * VEC_SCALING_FACTOR); \
                                     v->data[v->size++] = i; \
                                 } \
                                 \
-                                void vec_##tname##_addf(vec_##tname* v, type i) \
+                                void vec##tname##_addf(vec##tname* v, type i) \
                                 { \
                                     if(v->reserved == v->size) \
-                                        vec_##tname##_reserve(v, v->size * VEC_SCALING_FACTOR); \
-                                    memcpy(v->data + sizeof(type), v->data, v->size); \
-                                    vec_at(v, 0) = i; \
+                                        vec##tname##_reserve(v, v->size * VEC_SCALING_FACTOR); \
+                                    memmove(v->data + 1, v->data, v->size * sizeof(type)); \
+                                    _vec_at(v, 0) = i; \
+                                    ++v->size; \
                                 } \
                                 \
                                 \
                                 \
-                                void vec_##tname##_removef(vec_##tname* v) \
+                                void vec##tname##_removef(vec##tname* v) \
                                 { \
                                     if(v->size == 0) \
                                         return; \
                                     --v->size; \
-                                    memcpy(v->data, v->data + sizeof(type), v->size); \
+                                    memmove(v->data, v->data + 1, v->size * sizeof(type)); \
                                 } \
                                 \
-                                void vec_##tname##_removel(vec_##tname* v) \
+                                void vec##tname##_removel(vec##tname* v) \
                                 { \
                                     if(v->size == 0) \
                                         return; \
                                     --v->size;\
                                 }
                                 
+#define _VEC_DEFINE_EXT(type, tname) VEC_DEFINE_EXT(type, tname)
 
+#define VEC_DEFINE_NONAME(type) _VEC_DEFINE_EXT(type, )
 #define VEC_DEFINE(type) VEC_DEFINE_EXT(type, type)
+
+
+// related macros
+#define VEC_PRINT_SIMPLE(format) \
+                                do { \
+                                    printf("["); \
+                                    for (int i = 0; i < (v).size; ++i) { \
+                                        printf("%" #format, *vec_at(&(v), i)); \
+                                    } \
+                                    printf("]\n"); \
+                                } while(0)
+
 
 #endif

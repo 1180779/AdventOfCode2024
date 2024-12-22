@@ -31,6 +31,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\tests\c.hint" />
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>
