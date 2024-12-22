@@ -7,37 +7,36 @@
 VEC_DEFINE_NONAME(int)
 
 int main() {
-    vec v;
-    vec_init(&v);
+    vec v = VECINIT;
 
     // add
     for (int i = 0; i < 15; ++i) {
-        vec_add(&v, i);
+        vecAdd(&v, i);
     }
     VEC_PRINT(v);
 
     // add to front
     for (int i = 0; i < 5; ++i) {
-        vec_addf(&v, i - 99);
+        vecAddf(&v, i - 99);
         VEC_PRINT(v);
     }
     VEC_PRINT(v);
 
     // remove
     for (int i = 0; i < 3; ++i) {
-        vec_removel(&v);
+        vecRemovel(&v);
     }
     VEC_PRINT(v);
 
     // remove from front
     for (int i = 0; i < 3; ++i) {
-        vec_removef(&v);
+        vecRemovef(&v);
     }
     VEC_PRINT(v);
 
     // clear
-    vec_clear(&v);
+    vecClear(&v);
     VEC_PRINT(v);
 
-    vec_destroy(&v);
+    vecDestroy(&v);
 }
