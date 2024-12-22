@@ -3,6 +3,14 @@
 #define _1180779_SHARED_
 
 #include <stdlib.h>
+#include <stdio.h>
+
+#ifdef _MSC_VER
+
+size_t getline(char** lineptr, size_t* n, FILE* stream);
+
+#endif
+
 
 #define ERROR(source) fprintf(stderr, "file: %s, line: %d, ", __FILE__, __LINE__), perror(source), exit(EXIT_FAILURE)
 
