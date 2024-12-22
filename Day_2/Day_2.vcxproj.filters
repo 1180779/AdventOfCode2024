@@ -28,6 +28,6 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Day_1\task.MD" />
+    <None Include="task.MD" />
   </ItemGroup>
 </Project>
